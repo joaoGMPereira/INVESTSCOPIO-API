@@ -20,7 +20,7 @@ export class SimulationRouter extends BaseRouter {
     }
 
     private fetch() {
-        this.app.route(this.root + "v1" + '/simulation/:userID').get(this.controller.fetch)
+        this.app.route(this.root + "v1" + '/userSimulations').get(super.sessionControl(), this.controller.fetchUserSimulations)
     }
 
     private get() {

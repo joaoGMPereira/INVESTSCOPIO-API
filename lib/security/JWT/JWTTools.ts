@@ -11,7 +11,7 @@ var key = generator.generate({
 });
 
 const sessionTokenLife = 43200 // 12 h
-const accessTokenLife = 360 // 30 s
+const accessTokenLife = 30 // 30 s
 
 export class JWTTools {
 

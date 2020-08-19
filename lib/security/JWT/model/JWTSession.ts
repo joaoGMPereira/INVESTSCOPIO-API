@@ -13,7 +13,7 @@ export class JWTSession {
     deviceType: DeviceType
 
     constructor(clientAESData: any, type?: JWTType) {
-        this.userID = clientAESData.id
+        this.userID = clientAESData.userID
         this.uid = clientAESData.uid
         this.AESIV = clientAESData.AESIV.replace(/(\r\n|\n|\r)/gm, "");
         this.AESKey = clientAESData.AESKey.replace(/(\r\n|\n|\r)/gm, "");

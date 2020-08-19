@@ -2,6 +2,7 @@ import { AuthRoutes } from "./auth/AuthRoutes"
 import { NPSRoutes } from "./nps/NPSRoutes";
 import { UserRoutes } from "./user/UserRoutes";
 import { BrandRouter } from "./brand/brandRouter";
+import { SimulationRouter } from "./simulation/SimulationRouter";
 
 const ROOT = "/api/"
 
@@ -11,6 +12,6 @@ export class Router {
         new AuthRoutes(app, ROOT)
         new NPSRoutes(app, ROOT)
         new UserRoutes(app, ROOT)
-        new BrandRouter(app, ROOT)
+        new SimulationRouter(app, ROOT)
     }
 }

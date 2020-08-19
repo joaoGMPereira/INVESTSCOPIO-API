@@ -9,7 +9,7 @@ export class Environment {
         return this._instance || (this._instance = new this());
     }
 
-    public isProduction =  process.env.PRODUCTION_ENV || false
+    public isProduction =  process.env.PRODUCTION_ENV || true
 }
 
 const EnvironmentInstance = Environment.Instance;

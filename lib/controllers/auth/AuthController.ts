@@ -120,7 +120,7 @@ export class AuthController extends BaseController {
                         super.send(res, undefined, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                         return
                     }
-                    super.send(res, user)
+                    super.send(res, user, undefined, "Atenção!\nUsuário cadastrado com sucesso.")
                 });
             }
         });
@@ -128,7 +128,6 @@ export class AuthController extends BaseController {
 
     private static generateSessionToken(user: any, token: JWTSession) {
         token.userID = user._id
-
         token.uid = user.firebaseID
 
         let session = new JWTSession(token, JWTType.SESSION)

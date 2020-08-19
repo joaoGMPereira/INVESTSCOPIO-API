@@ -29,9 +29,9 @@ export class SimulationController extends BaseController {
         super.send(res, simulation, new HTTPStatus.SUCESS.OK)
     }
 
-    public async fetch(req: Request, res: Response) {
-
-        let simulations = await new FetchSimulationUseCase().fetch(req.params.userID)
+    public async fetchUserSimulations(req: Request, res: Response) {
+        let userID = super.session(req).userID
+        let simulations = await new FetchSimulationUseCase().fetch(userID)
 
         Logger.log(simulations, SimulationController.name, "fetch")
 
@@ -42,12 +42,13 @@ export class SimulationController extends BaseController {
 
         let createSimulationUseCase = new CreateSimulationUseCase()
 
-        let simulationModel = Simulation(super.ParsePayload(req.body.data))
+        const token = new JWTSession(req.params.session);
+        let userData = CryptoTools.AES().decrypt(req.body.data, token)
+        let simulationModel = Simulation(super.ParsePayload(userData))
 
-        Logger.log(simulationModel, SimulationController.name, "create")
-
-        createSimulationUseCase.createSimulation(simulationModel, (error, task) => {
-
+        Logger.log(simulationModel, SimulationController.name, "createSimulation")
+        let userID = super.session(req).userID
+        createSimulationUseCase.createSimulation(userID, simulationModel, (error, task) => {
             if (error) {
                 super.onError(res, new HTTPStatus.SERVER_ERROR.INTERNAL_SERVER_ERROR, error);
             }

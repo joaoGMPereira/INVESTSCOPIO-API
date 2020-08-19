@@ -7,7 +7,6 @@ import { Environment } from "../../tools/Environment";
 module.exports = (req, res, next) => {
 
   const token = req.headers['access-token'] || req.headers['session-token'];
-
   console.log("token: " + token);
   if (Environment.Instance.isProduction || token != null) {
     try {
