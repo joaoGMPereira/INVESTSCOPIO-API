@@ -42,9 +42,9 @@ export class SimulationController extends BaseController {
 
         let createSimulationUseCase = new CreateSimulationUseCase()
 
-        const token = new JWTSession(req.params.session);
+        const token = super.session(req)
         let userData = CryptoTools.AES().decrypt(req.body.data, token)
-        let simulationModel = Simulation(super.ParsePayload(userData))
+        let simulationModel = Simulation(JSON.parse(userData))
 
         Logger.log(simulationModel, SimulationController.name, "createSimulation")
         let userID = super.session(req).userID

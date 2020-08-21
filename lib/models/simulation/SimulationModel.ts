@@ -3,14 +3,14 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const SimulationSchema = new Schema({
-
     initialValue: {
         type: Number,
         required: true
     },
     monthValue: {
         type: Number,
-        required: true
+        required: false,
+        default: 0
     },
     interestRate: {
         type: Number,
@@ -22,15 +22,18 @@ export const SimulationSchema = new Schema({
     },
     initialMonthlyRescue: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
     increaseRescue: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
     goalIncreaseRescue: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
     isSimply: {
         type: Boolean,
@@ -39,6 +42,10 @@ export const SimulationSchema = new Schema({
     userID: {
         type: String,
         required: true
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 
 }, { usePushEach: true });

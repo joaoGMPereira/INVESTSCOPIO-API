@@ -28,7 +28,7 @@ export class SimulationRouter extends BaseRouter {
     }
 
     private create() {
-        this.app.route(this.root + "v1" + '/simulation').post(this.controller.create)
+        this.app.route(this.root + "v1" + '/simulation').post(super.sessionControl(), this.controller.create)
     }
 
     private delete() {

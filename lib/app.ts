@@ -22,6 +22,7 @@ class App {
   }
 
   private config(): void {
+    mongoose.set('useFindAndModify', true);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
   }
