@@ -124,7 +124,7 @@ export class CreateSimulationUseCase {
         return lastRescue
     }
 
-    //MARK: Verificar objetivo de regaste
+    //MARK: Verificar objetivo de resgate
     private checkGoalIncreaseRescue(simulation: typeof SimulationSchema, profitability: number, lastTotalValueRetrieved: number, lastProfitabilityUntilNextIncreaseRescue: number, lastRescue: number, month: number) {
         var increaseRescue = simulation.increaseRescue
         var updatedLastRescue = lastRescue
@@ -164,7 +164,7 @@ export class CreateSimulationUseCase {
         return checkUpdatedLastRescue
     }
 
-    //MARK: Verificar proximo resgate sem proximo objetivo
+    //MARK: Verificar se resgate é maior do que a rentabilidade
     private checkIfRescueIsHigherThanProfitability(rescue: number, profitability: number) {
         if (rescue > profitability) {
             this.lastRescue = rescue
@@ -173,7 +173,7 @@ export class CreateSimulationUseCase {
         return undefined
     }
 
-    //MARK: Verificar proximo resgate sem proximo objetivo
+    //MARK: Verificar resgate sem incremento de resgate
     private checkNextGoalRescueWithoutGoalIncreaseRescue(rescue: number, increaseRescue: number, goalIncreaseRescue: number, month: number) {
         if (goalIncreaseRescue == 0) {
             var nextGoalRescue = rescue
