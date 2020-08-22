@@ -5,14 +5,16 @@ export class Simulated {
     profitability?: number
     rescue?: number
     total?: number
+    totalRescue?: number
 
-    constructor(month?, monthValue?, profitability?, rescue?, total?){
+    constructor(month?, monthValue?, profitability?, rescue?, total?, totalRescue?){
         this.id = guidGenerator()
         this.month = month
         this.monthValue = monthValue
         this.profitability = profitability
         this.rescue = rescue
         this.total = total
+        this.totalRescue = totalRescue
     }
 }
 

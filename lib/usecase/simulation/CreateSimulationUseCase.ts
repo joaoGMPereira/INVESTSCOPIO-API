@@ -7,6 +7,9 @@ import { Simulated } from '../../models/simulation/SimulatedModel';
 import { UpdateSimulationUseCase } from './UpdateSimulationUseCase';
 
 const Simulation = mongoose.model('Simulation', SimulationSchema);
+export type Int = number & { __int__: void };
+
+export const truncToInt = (num: number): Int => Math.trunc(num) as Int;
 
 export class CreateSimulationUseCase {
 
@@ -15,6 +18,7 @@ export class CreateSimulationUseCase {
     totalValue: number = undefined
     lastRescue: number = undefined
     lastProfitabilityUntilNextIncreaseRescue: number = 0
+    totalRescue: number = 0
 
     public createSimulation(userID: String, simulationModel: typeof SimulationSchema, callback) {
         this.clearData()
@@ -24,7 +28,6 @@ export class CreateSimulationUseCase {
 
         this.totalMonths = simulationModel.totalMonths
         this.lastProfitabilityUntilNextIncreaseRescue = this.saveInitialProfitabilityUntilNextIncreaseRescue(simulationModel)
-        //simulatedValues.push(this.setInitialValueObject(simulationModel))
 
         if (this.totalMonths > 0) {
             for (var month = 1; month <= this.totalMonths; month++) {
@@ -36,7 +39,8 @@ export class CreateSimulationUseCase {
                     this.lastRescue = 0
                 }
                 let updatedTotalTotalWithRescue = this.updateTotalValue(this.lastRescue, simulationModel)
-                let simulatedValue = new Simulated(month, monthValue, this.profitability, this.lastRescue, updatedTotalTotalWithRescue)
+                this.totalRescue += this.lastRescue
+                let simulatedValue = new Simulated(month, monthValue, this.profitability, this.lastRescue, updatedTotalTotalWithRescue, this.totalRescue)
                 simulatedValues.push(simulatedValue)
             }
         }
@@ -126,18 +130,18 @@ export class CreateSimulationUseCase {
         var updatedLastRescue = lastRescue
         let goalIncreaseRescue = simulation.goalIncreaseRescue
         let nextRescueIsHigherThanProfitability = this.checkIfRescueIsHigherThanProfitability(lastRescue, profitability)
-        if (nextRescueIsHigherThanProfitability) {
+        if (nextRescueIsHigherThanProfitability != undefined) {
             updatedLastRescue = nextRescueIsHigherThanProfitability
             return updatedLastRescue
         }
         let nextRescueWithoutGoal = this.checkNextGoalRescueWithoutGoalIncreaseRescue(updatedLastRescue, increaseRescue, goalIncreaseRescue, month)
-        if (nextRescueWithoutGoal) {
+        if (nextRescueWithoutGoal != undefined) {
             updatedLastRescue = nextRescueWithoutGoal
             return updatedLastRescue
         }
-        var multiplierGoalIncreaseRescue = profitability - this.lastProfitabilityUntilNextIncreaseRescue/goalIncreaseRescue
+        var multiplierGoalIncreaseRescue: Int = truncToInt((profitability - this.lastProfitabilityUntilNextIncreaseRescue)/goalIncreaseRescue)
         if (multiplierGoalIncreaseRescue < 1) {
-            multiplierGoalIncreaseRescue = 1
+            multiplierGoalIncreaseRescue = truncToInt(1)
         }
         let nextGoalRescue = lastProfitabilityUntilNextIncreaseRescue + (goalIncreaseRescue * multiplierGoalIncreaseRescue)
         increaseRescue = increaseRescue * multiplierGoalIncreaseRescue
