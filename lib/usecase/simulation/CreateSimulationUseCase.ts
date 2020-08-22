@@ -33,12 +33,12 @@ export class CreateSimulationUseCase {
             for (var month = 1; month <= this.totalMonths; month++) {
                 let monthValue = simulationModel.monthValue
                 this.profitability = this.checkProfitability(simulationModel)
-                this.totalValue = this.checkTotalValue(simulationModel, this.profitability)
-                this.lastRescue = this.checkRescue(simulationModel, this.profitability, month, this.lastRescue, this.lastProfitabilityUntilNextIncreaseRescue)
+                this.totalValue = this.checkTotalValue(simulationModel)
+                this.lastRescue = this.checkRescue(simulationModel, month)
                 if(this.lastRescue == undefined) {
                     this.lastRescue = 0
                 }
-                let updatedTotalTotalWithRescue = this.updateTotalValue(this.lastRescue, simulationModel)
+                let updatedTotalTotalWithRescue = this.updateTotalValue(simulationModel)
                 this.totalRescue += this.lastRescue
                 let simulatedValue = new Simulated(month, monthValue, this.profitability, this.lastRescue, updatedTotalTotalWithRescue, this.totalRescue)
                 simulatedValues.push(simulatedValue)
@@ -93,9 +93,9 @@ export class CreateSimulationUseCase {
     }
 
     //MARK: Calcular Valor Total Com Rendimento
-    private checkTotalValue(simulation: typeof SimulationSchema, profitability: number) {
+    private checkTotalValue(simulation: typeof SimulationSchema) {
         let lastTotalValue = this.getLastTotalValue(simulation)
-        let totalValueUpdated = lastTotalValue + profitability + (simulation.monthValue)
+        let totalValueUpdated = lastTotalValue + this.profitability + (simulation.monthValue)
         return totalValueUpdated
     }
 
@@ -111,16 +111,16 @@ export class CreateSimulationUseCase {
     }
 
     //MARK: Verificar proximo resgate
-    private checkRescue(simulation: typeof SimulationSchema, profitability: number, month: number, rescue?: number, lastProfitabilityUntilNextIncreaseRescue?: number) {
+    private checkRescue(simulation: typeof SimulationSchema, month: number) {
         var lastRescue = simulation.initialMonthlyRescue
 
-        if (rescue) {
-            lastRescue = rescue
+        if (this.lastRescue) {
+            lastRescue = this.lastRescue
         }
 
         let lastTotalValueRetrieved = this.getLastTotalValue(simulation)
 
-        lastRescue = this.checkGoalIncreaseRescue(simulation, profitability, lastTotalValueRetrieved, lastProfitabilityUntilNextIncreaseRescue, lastRescue, month)
+        lastRescue = this.checkGoalIncreaseRescue(simulation, this.profitability, lastTotalValueRetrieved, this.lastProfitabilityUntilNextIncreaseRescue, lastRescue, month)
         return lastRescue
     }
 
@@ -190,7 +190,7 @@ export class CreateSimulationUseCase {
     }
 
     //MARK: atualizar valor total com o resgate
-    private updateTotalValue(rescue: number, simulation: typeof SimulationSchema) {
+    private updateTotalValue(simulation: typeof SimulationSchema) {
 
         var lastTotalValueRetrieved = 0
         if (this.totalValue) {
@@ -198,7 +198,7 @@ export class CreateSimulationUseCase {
         } else {
             simulation.initialValue
         }
-        lastTotalValueRetrieved = lastTotalValueRetrieved - rescue
+        lastTotalValueRetrieved = lastTotalValueRetrieved - this.lastRescue
         this.totalValue = lastTotalValueRetrieved
         return lastTotalValueRetrieved
     }
