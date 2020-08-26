@@ -6,7 +6,7 @@ import * as mongoose from "mongoose";
 import { Logger } from "tools/Logger";
 const packageInfo = require('../package.json');
 const expressOasGenerator = require('express-oas-generator');
-const DEVELOPMENT = process.env.DEVELOPMENT_ENV || true
+const DEVELOPMENT = process.env.DEVELOPMENT_TEST || true
 const DATABASE = DEVELOPMENT ? 'mongodb://127.0.0.1:27017/' : process.env.MONGO_DATA_BASE;
 
 class App {
