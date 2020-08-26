@@ -7,7 +7,7 @@ import { Logger } from "tools/Logger";
 const packageInfo = require('../package.json');
 const expressOasGenerator = require('express-oas-generator');
 const DEVELOPMENT = process.env.DEVELOPMENT_TEST || true
-const DATABASE = DEVELOPMENT ? 'mongodb://127.0.0.1:27017/' : process.env.MONGO_DATA_BASE;
+const DATABASE = process.env.MONGO_DATA_BASE;
 
 class App {
 
@@ -30,6 +30,7 @@ class App {
 
     console.log("DATABASE:" + DATABASE)
     console.log("DEVELOPMENT:" + DEVELOPMENT)
+    console.log("URL:" + this.mongoUrl)
   }
 
   private mongoSetup(): void {
