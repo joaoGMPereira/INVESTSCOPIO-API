@@ -1,7 +1,6 @@
 import { AuthRoutes } from "./auth/AuthRoutes"
 import { NPSRoutes } from "./nps/NPSRoutes";
 import { UserRoutes } from "./user/UserRoutes";
-import { BrandRouter } from "./brand/brandRouter";
 import { SimulationRouter } from "./simulation/SimulationRouter";
 
 const ROOT = "/api/"
