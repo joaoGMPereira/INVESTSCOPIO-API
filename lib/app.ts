@@ -33,7 +33,7 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: false }));
 
     console.log("DATABASE:" + this.database())
-    console.log("DEVELOPMENT:" + DEVELOPMENT)
+    console.log("DEVELOPMENT:" + process.env.DEVELOPMENT_TEST)
     console.log("URL:" + this.mongoUrl)
   }
 
