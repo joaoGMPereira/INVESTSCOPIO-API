@@ -3,6 +3,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Router } from "./routes/Router";
 import * as mongoose from "mongoose";
+import { Logger } from "tools/Logger";
 const packageInfo = require('../package.json');
 const expressOasGenerator = require('express-oas-generator');
 const DEVELOPMENT = process.env.DEVELOPMENT_ENV || true
@@ -26,6 +27,9 @@ class App {
     mongoose.set('useFindAndModify', true);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
+
+    Logger.log("DATABASE:" + DATABASE)
+    Logger.log("DEVELOPMENT:" + DEVELOPMENT)
   }
 
   private mongoSetup(): void {
