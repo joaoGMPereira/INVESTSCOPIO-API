@@ -6,12 +6,13 @@ import * as mongoose from "mongoose";
 const packageInfo = require('../package.json');
 const expressOasGenerator = require('express-oas-generator');
 const DEVELOPMENT = process.env.DEVELOPMENT_ENV || true
+const DATABASE = DEVELOPMENT ? 'mongodb://127.0.0.1:27017/' : process.env.MONGO_DATA_BASE;
 
 class App {
 
   public app: express.Application;
   public router: Router = new Router();
-  public mongoUrl: string = 'mongodb://127.0.0.1:27017/' + packageInfo.name + '-database';
+  public mongoUrl: string = DATABASE + packageInfo.name + '-database';
 
   constructor() {
     this.app = express();
