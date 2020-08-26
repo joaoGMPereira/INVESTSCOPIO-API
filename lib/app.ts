@@ -28,8 +28,8 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
 
-    Logger.log("DATABASE:" + DATABASE)
-    Logger.log("DEVELOPMENT:" + DEVELOPMENT)
+    console.log("DATABASE:" + DATABASE)
+    console.log("DEVELOPMENT:" + DEVELOPMENT)
   }
 
   private mongoSetup(): void {
