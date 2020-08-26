@@ -24,7 +24,11 @@ class App {
   }
 
   private database() {
-    return DEVELOPMENT ? 'mongodb://127.0.0.1:27017/' : process.env.MONGO_DATA_BASE
+    if(DEVELOPMENT == true) {
+      return 'mongodb://127.0.0.1:27017/'
+    } else {
+      return process.env.MONGO_DATA_BASE
+    }
   }
 
   private config(): void {
