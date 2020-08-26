@@ -4,16 +4,16 @@ import * as bodyParser from "body-parser";
 import { Router } from "./routes/Router";
 import * as mongoose from "mongoose";
 import { Logger } from "tools/Logger";
+
 const packageInfo = require('../package.json');
 const expressOasGenerator = require('express-oas-generator');
 const DEVELOPMENT = process.env.DEVELOPMENT_TEST || true
-const DATABASE = process.env.MONGO_DATA_BASE;
 
 class App {
 
   public app: express.Application;
   public router: Router = new Router();
-  public mongoUrl: string = DATABASE + packageInfo.name + '-database';
+  public mongoUrl: string = this.database() + packageInfo.name + '-database';
 
   constructor() {
     this.app = express();
@@ -21,6 +21,10 @@ class App {
     this.router.routes(this.app);
     this.mongoSetup();
     this.swagger();
+  }
+
+  private database() {
+    return DEVELOPMENT ? 'mongodb://127.0.0.1:27017/' : process.env.MONGO_DATA_BASE
   }
 
   private config(): void {
