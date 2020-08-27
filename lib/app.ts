@@ -3,11 +3,10 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Router } from "./routes/Router";
 import * as mongoose from "mongoose";
-import { Logger } from "tools/Logger";
 
 const packageInfo = require('../package.json');
 const expressOasGenerator = require('express-oas-generator');
-const DEVELOPMENT = process.env.DEVELOPMENT_TEST || true
+const REMOTEDB = process.env.REMOTE_DB || false
 
 class App {
 
@@ -24,10 +23,10 @@ class App {
   }
 
   private database() {
-    if(DEVELOPMENT == true) {
-      return 'mongodb://127.0.0.1:27017/'
-    } else {
+    if(REMOTEDB) {
       return process.env.MONGO_DATA_BASE
+    } else {
+      return 'mongodb://127.0.0.1:27017/'
     }
   }
 
@@ -35,10 +34,6 @@ class App {
     mongoose.set('useFindAndModify', true);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
-
-    console.log("DATABASE:" + this.database())
-    console.log("DEVELOPMENT:" + process.env.DEVELOPMENT_TEST)
-    console.log("URL:" + this.mongoUrl)
   }
 
   private mongoSetup(): void {
@@ -47,7 +42,7 @@ class App {
   }
 
   private swagger() {
-    if (DEVELOPMENT) {
+    if (!REMOTEDB) {
       expressOasGenerator.handleResponses(this.app);
       expressOasGenerator.handleRequests();
     }
