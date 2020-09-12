@@ -95,4 +95,20 @@ export class SimulationController extends BaseController {
             }
         })
     }
+
+    public deleteAll(req: Request, res: Response) {
+
+        let useCase = new DeleteSimulationUseCase()
+
+        Logger.log(useCase, SimulationController.name, "deleteAll")
+        let userID = super.session(req).userID
+        useCase.deleteAll(userID, (error, model) => {
+            if (error) {
+                super.onError(res, new HTTPStatus.SERVER_ERROR.INTERNAL_SERVER_ERROR, error);
+            }
+            else {
+                super.send(res, model, new HTTPStatus.SUCESS.OK)
+            }
+        })
+    }
 }

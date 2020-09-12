@@ -16,6 +16,7 @@ export class SimulationRouter extends BaseRouter {
         this.fetch()
         this.create()
         this.delete()
+        this.deleteAll()
         this.update()
     }
 
@@ -33,6 +34,10 @@ export class SimulationRouter extends BaseRouter {
 
     private delete() {
         this.app.route(this.root + "v1" + '/simulation/:id').delete(this.controller.delete)
+    }
+
+    private deleteAll() {
+        this.app.route(this.root + "v1" + '/deleteAllSimulations').delete(super.sessionControl(), this.controller.deleteAll)
     }
 
     private update() {
