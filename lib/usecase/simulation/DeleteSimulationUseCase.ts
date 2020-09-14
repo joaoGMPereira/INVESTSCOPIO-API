@@ -15,7 +15,7 @@ export class DeleteSimulationUseCase {
                 callback(error, new HTTPStatus.CLIENT_ERROR)
             }
             else {
-                callback(undefined, model)
+                callback(undefined, new SimulationDelete(model.ok))
             }
         });
     }

@@ -33,7 +33,7 @@ export class SimulationRouter extends BaseRouter {
     }
 
     private delete() {
-        this.app.route(this.root + "v1" + '/simulation/:id').delete(this.controller.delete)
+        this.app.route(this.root + "v1" + '/simulation/:id').delete(super.sessionControl(), this.controller.delete)
     }
 
     private deleteAll() {
