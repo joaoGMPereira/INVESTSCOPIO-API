@@ -14,7 +14,7 @@ export class NPSRoutes extends BaseRouter {
         this.root = root
         this.add()
         this.get()
-        this.getWithID()
+        this.getWithVersionApp()
         this.update()
         this.delete()
 
@@ -28,8 +28,8 @@ export class NPSRoutes extends BaseRouter {
         this.app.route(this.root + "v1" + '/nps').get(super.sessionControl(), this.npsController.get)
     }
 
-    private getWithID() {
-        this.app.route(this.root + "v1" + '/nps/:npsID').get(super.sessionControl(), this.npsController.getWithID)
+    private getWithVersionApp() {
+        this.app.route(this.root + "v1" + '/nps/:versionApp').get(super.sessionControl(), this.npsController.getWithVersionApp)
     }
 
     private update() {

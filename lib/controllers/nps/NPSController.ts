@@ -65,8 +65,9 @@ export class NPSController extends BaseController {
         });
     }
 
-    public getWithID(req: Request, res: Response) {
-        NPS.findById(req.params.npsID, (err, nps) => {
+    public getWithVersionApp(req: Request, res: Response) {
+        let version = NPSController.transformVersionToIntWithPadding(req.params.versionApp)
+        NPS.findOne({userID: super.session(req).userID, versionApp: version}, (err, nps) => {
             if (err) {
                 super.send(res, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
