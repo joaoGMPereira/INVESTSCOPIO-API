@@ -1,11 +1,10 @@
-import * as mongoose from 'mongoose';
-import { Request, Response } from "express";
-import { HTTPStatus } from '../../models/http/HTTPStatus';
+import * as mongoose from 'mongoose'
+import { Request, Response } from "express"
+import { HTTPStatus } from '../../models/http/HTTPStatus'
 
-import { SimulationSchema } from '../../models/simulation/SimulationModel';
+import { SimulationSchema } from '../../models/simulation/SimulationModel'
 
-import { CryptoTools } from "../../security/CryptoTools";
-import { JWTSession } from "../../security/JWT/model/JWTSession";
+import { CryptoTools } from "../../security/CryptoTools"
 import { Logger } from '../../tools/Logger'
 
 import { BaseController } from "../BaseController"

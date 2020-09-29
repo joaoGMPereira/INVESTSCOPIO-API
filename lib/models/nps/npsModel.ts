@@ -13,10 +13,14 @@ export const NPSSchema = new Schema({
         required: 'Send SO Version'
     },
     versionApp: {
-        type: Number,
+        type: String,
         required: 'Send App Version'       
     },
-    created_date: {
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
         type: Date,
         default: Date.now
     },

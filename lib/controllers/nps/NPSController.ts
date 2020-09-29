@@ -1,25 +1,25 @@
-import * as mongoose from 'mongoose';
-import { NPSSchema } from '../../models/nps/npsModel';
-import { Request, Response } from "express";
+import * as mongoose from 'mongoose'
+import { NPSSchema } from '../../models/nps/npsModel'
+import { Request, Response } from "express"
 import { BaseController } from "../BaseController"
-import { HTTPStatus } from '../../models/http/HTTPStatus';
-
+import { HTTPStatus } from '../../models/http/HTTPStatus'
+import { CryptoTools } from "../../security/CryptoTools"
+import { Logger } from '../../tools/Logger'
 
 const NPS = mongoose.model('NPS', NPSSchema);
 
 export class NPSController extends BaseController {
     public add(req: Request, res: Response) {
-        //TODO: authorizedUser
-        let nps = req.body
-        nps.userID = super.session(req).userID
-        nps.versionApp = NPSController.transformVersionToIntWithPadding(nps.versionApp)
-        let newNPS = new NPS(req.body);
-
-        NPS.findOneAndUpdate({ 'userID': newNPS.userID, 'versionApp': newNPS.versionApp }, newNPS, (err, nps) => {
+        const token = super.session(req)
+        let data = CryptoTools.AES().decrypt(req.body.data, token)
+        let npsRequest = NPS(JSON.parse(data))
+        npsRequest.userID = super.session(req).userID
+        npsRequest.versionApp = NPSController.transformVersionToIntWithPadding(npsRequest.versionApp)
+        NPS.findOneAndUpdate({userID: super.session(req).userID, versionApp:npsRequest.versionApp}, {$set: { rate: npsRequest.rate, updatedAt: Date.now() }, $inc: { __v: 1 }}, { new: true}, (err, nps) => {
             if (nps) {
-                super.send(res, nps, undefined, 'Obrigado pela avaliação!');
+                super.send(res, nps, undefined, "Avaliação atualizada com sucesso!");
             } else {
-                newNPS.save((err, nps) => {
+                npsRequest.save((err, nps) => {
                     if (err) {
                         super.send(res, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
                     }
